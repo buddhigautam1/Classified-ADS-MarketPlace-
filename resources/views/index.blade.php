@@ -49,38 +49,39 @@
             <div class="col-lg-2 col-md-4 col-lg" id="card">
                    
                         <div class="card-body">
-                            <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
+                            <div class="d-block mb-4 h-100">
                                 <img class="img-thumbnail" src="/img/icons8-plush-48.png"
                                 style=" height: 100px; background-size: cover;">
                                 <p class="">Toys</p>
-                            </a>
+                            </div>
                       
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-lg" id="card">
                    
                     <div class="card-body">
-                        <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
+                        <div class="d-block mb-4 h-100">
                             <img class="img-thumbnail" src="/img/icons8-soccer-ball-48.png"
                             style=" height: 100px; background-size: cover;">
                             <p class="">Sports</p>
-                        </a>
+                        </div>
                   
                 </div>
             </div>
             <div class="col-lg-2 col-md-4 col-lg" id="card">
                    
                 <div class="card-body">
-                    <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
+                    <div class="d-block mb-4 h-100">
                         <img class="img-thumbnail" src="/img/icons8-retro-tv-100.png"
                         style=" height: 100px; background-size: cover;">
                         <p class="">Tv</p>
-                    </a>
+                    </div>
               
             </div>
         </div>
         </div>
 
+        @if ($category)
         <div class="container mt-5">
             <br>
             <span>
@@ -127,7 +128,7 @@
                             @forelse($secondsAds as $secondsad)
                                 <div class="col-lg-4 d-flex align-items-stretch">
                                     <div class="card mb-4 box-shadow">
-                                        <a href="{{ route('product.view', [$secondsad->id, $firstad->slug]) }}">
+                                        <a href="{{ route('product.view', [$secondsad->id, $secondsad->slug]) }}">
                                             <img class="card-img-top" style="width:100%; height:
                                                           250px; background-size: cover;"
                                                 src="{{ Storage::url($secondsad->feature_image) }}"></a>
@@ -136,7 +137,7 @@
                                             <p class="card-text">USD {{ $secondsad->price }}</p>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$secondsad->id, $firstad->slug]) }}"
+                                                    <a href="{{ route('product.view', [$secondsad->id, $secondsad->slug]) }}"
                                                         class="btn btn-sm btn-outline-secondary">View ad</a>
                                                 </div>
                                                 <small
@@ -166,9 +167,11 @@
                 </a>
             </div>
         </div>
+        @endif
 
 
 
+        @if ($categoryElectronic)
         <div class="container mt-5">
             <span>
                 <h1>Electronics</h1>
@@ -225,7 +228,7 @@
                                             <p class="card-text">USD {{ $secondsAdsForElectronic->price }}</p>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$secondsAdsForElectronic->id, $firstAdsForElectronic->slug]) }}"
+                                                    <a href="{{ route('product.view', [$secondsAdsForElectronic->id, $secondsAdsForElectronic->slug]) }}"
                                                         class="btn btn-sm btn-outline-secondary">View ad</a>
                                                 </div>
                                                 <small
@@ -248,13 +251,14 @@
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next" href="#carouselExampleFad{{ $categoryElectronic->id }}e" role="button"
+                <a class="carousel-control-next" href="#carouselExampleFade{{ $categoryElectronic->id }}" role="button"
                     data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
             </div>
         </div>
+        @endif
 
         <div class="container mt-5">
             <span>

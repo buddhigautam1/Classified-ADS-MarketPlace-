@@ -30,7 +30,7 @@
                                     <tbody>
                                         @forelse($ads as $ad)
                                             <tr>
-                                            <td>{{$ad->fraudad->name}}</td>
+                                            <td>{{ optional($ad->advertisement)->name ?? 'Advertisement removed' }}</td>
                                            
                                                 <td>
                                                    {{$ad->email}}
@@ -40,21 +40,26 @@
                                             <td>{{$ad->message}}</td>
 
                                                 <td>
-                                                <a target="_blank" href="{{route('product.view',[$ad->ad_id,$ad->fraudad->slug])}}">
+                                                @if ($ad->advertisement)
+                                                <a target="_blank" href="{{route('product.view',[$ad->ad_id,$ad->advertisement->slug])}}">
                                                         <button class="btn btn-primary">
                                                             View
                                                         </button>
                                                     </a>
+                                                @else
+                                                    <span class="text-muted">Unavailable</span>
+                                                @endif
                                                 </td>
                                                 <td>
+                                                    @if ($ad->advertisement)
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                        data-target="#exampleModal{{ $ad->ad_id }}">
+                                                        data-target="#exampleModal{{ $ad->id }}">
                                                         <i class="mdi mdi-delete"></i>
                                                     </button>
 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal{{ $ad->ad_id }}" tabindex="-1"
+                                                    <div class="modal fade" id="exampleModal{{ $ad->id }}" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <form action="{{ route('ads.destroy', $ad->ad_id) }}" method="post">
@@ -83,6 +88,9 @@
                                                             </form>
                                                         </div>
                                                     </div>
+                                                    @else
+                                                        <span class="text-muted">Already deleted</span>
+                                                    @endif
 
 
 
