@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
 use App\Models\Advertisement;
+use App\Models\Category;
 
 class FrontAdsController extends Controller
 {
@@ -12,24 +11,32 @@ class FrontAdsController extends Controller
     {
 
         //for category car
-        $category = Category::CategoryCar();
-        $firstAds = Advertisement::firstFourAdsInCaurosel($category->id);
-        $secondsAds = Advertisement::secondFourAdsInCaurosel($category->id);
+        $category = Category::categoryCar()->first();
+        $firstAds = collect();
+        $secondsAds = collect();
+
+        if ($category) {
+            $firstAds = Advertisement::firstFourAdsInCaurosel($category->id);
+            $secondsAds = Advertisement::secondFourAdsInCaurosel($category->id);
+        }
+
         //for category electronic
-        $categoryElectronic = Category::CategoryElectronic();
-        $firstAdsForElectronics = Advertisement::firstFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
+        $categoryElectronic = Category::categoryElectronic()->first();
+        $firstAdsForElectronics = collect();
+        $secondsAdsForElectronics = collect();
+
+        if ($categoryElectronic) {
+            $firstAdsForElectronics = Advertisement::firstFourAdsInCauroselForElectronic(
+                $categoryElectronic->id
+            );
+            $secondsAdsForElectronics = Advertisement::secondFourAdsInCauroselForElectronic(
+                $categoryElectronic->id
+            );
+        }
+
         // get all categories
         $categories = Category::get();
-        $secondsAdsForElectronics = Advertisement::secondFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
         $advertisements = Advertisement::latest()->paginate(30);
-        
-
-
-
 
         return view('index', compact(
             'firstAds',
