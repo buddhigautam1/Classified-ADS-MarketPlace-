@@ -24,11 +24,11 @@ class Category extends Model
     //scope
     public function scopeCategoryCar($query)
     {
-     return $query->where('name', 'car')->first();
+     return $query->whereRaw('LOWER(name) = ?', ['car'])->first();
     }
     public function scopeCategoryElectronic($query)
     {
-     return $query->where('name', 'electronic')->first();
+     return $query->whereRaw('LOWER(name) in (?, ?)', ['electronic', 'electronics'])->first();
     }
   
 

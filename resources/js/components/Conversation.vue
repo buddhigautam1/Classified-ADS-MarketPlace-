@@ -1,137 +1,91 @@
 <template>
-    <div class="row">
-        <div class="col-md-2">
-        <p v-for="(user,index) in users" :key="index">
-          <span v-if="user.avatar">
-            <img :src=" '/storage/'+ (user.avatar.substring(7)) " width="80" style="border-radius:50%;">
-
-          </span>
-          <span v-else>
-              <img :src=" '/img/man.jpg' " width="80" style="border-radius:50%;">
-          </span>
-
-            <a href="#" @click.prevent="showMessage(user.id)">
-                <p>{{user.name}}</p>
-            </a>
-           
-        </p>
-        </div>
-        <div class="col-md-10">
+    <div class="row chat-layout animate-in">
+        <aside class="col-lg-3 mb-4">
             <div class="card">
-                <div class="card-header text-center">
-                    <span>Chat </span>
+                <div class="card-header">Conversations</div>
+                <div class="list-group list-group-flush chat-user-list">
+                    <button
+                        v-for="(user, index) in users"
+                        :key="index"
+                        type="button"
+                        class="list-group-item list-group-item-action chat-user"
+                        :class="{ active: selectedUserId === user.id }"
+                        @click.prevent="showMessage(user.id)"
+                    >
+                        <img :src="avatarUrl(user.avatar)" :alt="user.name">
+                        <span>{{ user.name }}</span>
+                    </button>
+
+                    <div v-if="!users.length" class="list-group-item text-muted">
+                        No conversations yet.
+                    </div>
                 </div>
-                <div  v-if="selectedUserId"
-                    class="card-body chat-msg" v-chat-scroll="{always: false, smooth: true, scrollonremoved:true}">
-                    <ul class="chat"  v-for="(message,index) in messages" :key="index"> 
-                   
-                        <li class="sender clearfix" v-if="message.selfOwned" >
-                         
-                            <span class="chat-img left clearfix mx-2" v-if="message.user.avatar">
-                                <img :src=" '/storage/'+ (message.user.avatar.substring(7)) " width="60">
+            </div>
+        </aside>
 
-                            </span>
-                            <span class="chat-img left clearfix mx-2" v-else>
-                                <img :src=" '/img/man.jpg'" width="60">
+        <section class="col-lg-9">
+            <div class="card chat-card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <span>Chat</span>
+                    <span v-if="selectedUserId" class="badge badge-primary">Live</span>
+                </div>
 
-                            </span>
-                            <div class="chat-body2 clearfix">
-                                <div class="header clearfix">
-                                    <strong class="primary-font">
-                                            
-                                     {{message.user.name}}
-                                    </strong>
-                                    <small class="right text-muted">
-                                        <span
-                                            class="glyphicon glyphicon-time"
-                                        ></span
-                                        >
-                                       {{ moment(message.created_at).format("DD-MM-YYYY") }}
-
-                                        </small
-                                    >
+                <div
+                    v-if="selectedUserId"
+                    class="card-body chat-msg"
+                    v-chat-scroll="{ always: false, smooth: true, scrollonremoved: true }"
+                >
+                    <ul class="chat">
+                        <li
+                            v-for="(message, index) in messages"
+                            :key="index"
+                            class="chat-message"
+                            :class="{ 'is-self': message.selfOwned }"
+                        >
+                            <img class="chat-avatar" :src="avatarUrl(message.user.avatar)" :alt="message.user.name">
+                            <div class="chat-bubble">
+                                <div class="chat-meta">
+                                    <strong>{{ message.user.name }}</strong>
+                                    <small>{{ moment(message.created_at).format("DD-MM-YYYY") }}</small>
                                 </div>
-                                <p class="text-center" v-if="message.ads">
-                                    <a :href=" '/products/'+ message.ads.id+'/'+message.ads.slug " target="_blank">
-                                        {{message.ads.name}}
-                                        <img :src=" '/storage/'+ (message.ads.feature_image.substring(7)) " width="120">
+
+                                <p class="chat-ad" v-if="message.ads">
+                                    <a :href="'/products/' + message.ads.id + '/' + message.ads.slug" target="_blank" rel="noopener">
+                                        {{ message.ads.name }}
+                                        <img :src="assetUrl(message.ads.feature_image)" :alt="message.ads.name">
                                     </a>
-
                                 </p>
-                
-                                <p
-                                >
-                                
-                   
-                                 {{message.body}}
 
-                                </p>
+                                <p class="mb-0">{{ message.body }}</p>
                             </div>
-                        </li>
-                        <li class="buyer clearfix" v-else>
-                            <span class="chat-img right clearfix  mx-2" v-if="message.user.avatar">
-                               <img :src=" '/storage/'+ (message.user.avatar.substring(7)) " width="60">
-
-                            </span>
-                            <span class="chat-img right clearfix  mx-2" v-else>
-                               <img :src=" '/img/man.jpg'" width="50">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header clearfix">
-                                    <small class="left text-muted"
-                                        ><span
-                                            class="glyphicon glyphicon-time"
-                                            
-                                        ></span
-                                        >   {{ moment(message.created_at).format("DD-MM-YYYY") }}</small
-                                    >
-                                    <strong class="right primary-font">
-                                       {{message.user.name}}
-                                    </strong>
-                                </div>
-                             <p class="text-center" v-if="message.ads">
-                                    <a :href=" '/products/'+ message.ads.id+'/'+message.ads.slug " target="_blank">
-                                        {{message.ads.name}}
-                                        <img :src=" '/storage/'+ (message.ads.feature_image.substring(7)) " width="120">
-                                    </a>
-
-                                </p>
-                                <p>
-                                           
-                                  {{message.body}}
-                                </p>
-                            </div>
-                        </li>
-                        <li class="sender clearfix">
-                            <span class="chat-img left clearfix mx-2"> </span>
                         </li>
                     </ul>
                 </div>
-                <div style="min-height:250px;" v-else>
-                    <p class="text-center">Please select the user to chat.</p>
+
+                <div class="chat-empty" v-else>
+                    <i class="far fa-comments"></i>
+                    <p>Select a conversation to start chatting.</p>
                 </div>
-              
+
                 <div class="card-footer">
                     <div class="input-group">
                         <input
                             v-model="body"
                             id="btn-input"
                             type="text"
-                            class="form-control input-sm"
+                            class="form-control"
                             placeholder="Type your message here..."
-                        />
-                        <span class="input-group-btn">
-                            <button
-                                class="btn btn-primary"
-                                @click.prevent="sendMessage()"
-                              >
+                            @keyup.enter="sendMessage"
+                        >
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" @click.prevent="sendMessage">
                                 Send
                             </button>
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </template>
 
@@ -145,21 +99,31 @@ export default {
             selectedUserId:'',
             body:'',
             moment:moment,
+            poller:null,
         }
     },
     mounted(){
-
         axios.get('/users').then((response)=>{
             this.users = response.data
         })
-        setInterval(()=>{
-            this.showMessage(this.selectedUserId)
+
+        this.poller = setInterval(()=>{
+            if (this.selectedUserId) {
+                this.showMessage(this.selectedUserId)
+            }
         },1000)
-      
-       
+    },
+    beforeDestroy(){
+        if (this.poller) {
+            clearInterval(this.poller)
+        }
     },
     methods:{
         showMessage(userId){
+            if (!userId) {
+                return
+            }
+
             axios.get('/message/user/'+userId).then((response)=>{
                 this.messages = response.data
                 this.selectedUserId = userId
@@ -169,11 +133,11 @@ export default {
         sendMessage()
         {
             if(this.body==''){
-                alert('Please write your message')
+                this.$toaster.warning('Please write your message.', {timeout: 3000})
                 return
             }
             if(this.selectedUserId==''){
-             alert('Please select the user')
+                this.$toaster.warning('Please select a conversation first.', {timeout: 3000})
                 return   
             }
             
@@ -185,98 +149,134 @@ export default {
                 this.body=''
             })
         },
+        assetUrl(path) {
+            if (!path) {
+                return '/img/man.jpg'
+            }
+
+            if (/^https?:\/\//.test(path)) {
+                return path
+            }
+
+            return '/storage/' + path.replace(/^public\//, '')
+        },
+        avatarUrl(avatar) {
+            return this.assetUrl(avatar)
+        },
      
     }
 };
 </script>
 <style>
-    .chat
-{
+.chat-user {
+    align-items: center;
+    display: flex;
+    gap: .75rem;
+    font-weight: 800;
+}
+
+.chat-user img,
+.chat-avatar {
+    border-radius: 50%;
+    height: 48px;
+    object-fit: cover;
+    width: 48px;
+}
+
+.chat-card {
+    min-height: 560px;
+}
+
+.chat {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.chat li
-{
-    margin-bottom: 40px;
-    padding-bottom: 5px;
-    margin-top: 10px;
-    width: 80%;
-    height: 10px;
+.chat-msg {
+    background: #f8fafc;
+    height: 430px;
+    overflow-y: auto;
 }
 
-
-.chat li .chat-body p
-{
-    margin: 0;
+.chat-message {
+    align-items: flex-end;
+    display: flex;
+    gap: .75rem;
+    margin-bottom: 1rem;
+    max-width: 86%;
 }
 
-
-.chat-msg
-{
-    overflow-y: scroll;
-    height: 350px;
-}
-.chat-msg .chat-img
-{
-    width: 50px;
-    height: 50px;
-}
-.chat-msg .img-circle
-{
-    border-radius: 50%;
-}
-.chat-msg .chat-img
-{
-    display: inline-block;
-}
-.chat-msg .chat-body
-{
-    display: inline-block;
-    max-width: 80%;
-    background-color: #FFC195;
-    border-radius: 12.5px;
-    padding: 15px;
-}
-.chat-msg .chat-body2
-{
-    display: inline-block;
-    max-width: 80%;
-    background-color:#ccc;
-    border-radius: 12.5px;
-    padding: 15px;
-}
-.chat-msg .chat-body strong
-{
-  color: #0169DA;
+.chat-message.is-self {
+    flex-direction: row-reverse;
+    margin-left: auto;
 }
 
-.chat-msg .buyer
-{
-    text-align: right ;
-    float: right;
-}
-.chat-msg .buyer p
-{
-    text-align: left ;
-}
-.chat-msg .sender
-{
-    text-align: left ;
-    float: left;
-}
-.chat-msg .left
-{
-    float: left;
-}
-.chat-msg .right
-{
-    float: right;
+.chat-bubble {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem 1rem 1rem .25rem;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, .06);
+    padding: .9rem 1rem;
 }
 
-.clearfix {
-  clear: both;
+.chat-message.is-self .chat-bubble {
+    background: #2563eb;
+    border-color: #2563eb;
+    border-radius: 1rem 1rem .25rem 1rem;
+    color: #fff;
 }
 
+.chat-meta {
+    align-items: center;
+    display: flex;
+    gap: .75rem;
+    justify-content: space-between;
+    margin-bottom: .45rem;
+}
+
+.chat-meta small {
+    color: #64748b;
+}
+
+.chat-message.is-self .chat-meta small,
+.chat-message.is-self a {
+    color: rgba(255, 255, 255, .82);
+}
+
+.chat-ad img {
+    border-radius: .75rem;
+    display: block;
+    margin-top: .5rem;
+    max-width: 120px;
+}
+
+.chat-empty {
+    align-items: center;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    justify-content: center;
+    min-height: 430px;
+}
+
+.chat-empty i {
+    font-size: 3rem;
+}
+
+@media (max-width: 767.98px) {
+    .chat-user-list {
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    .chat-message {
+        max-width: 100%;
+    }
+
+    .chat-card {
+        min-height: auto;
+    }
+}
 </style>

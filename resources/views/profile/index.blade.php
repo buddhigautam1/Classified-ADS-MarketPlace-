@@ -1,16 +1,12 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="container">
+    <div class="container animate-in">
         <div class="row">
-            <div class="col-md-3">
-
+            <div class="col-lg-3 mb-4">
                 @include('sidebar')
-
-               
-
             </div>
-            <div class="col-md-5">
+            <div class="col-lg-5 mb-4">
                 @if(Session::has('message'))
                 <div class="alert alert-success">
                     {{Session::get('message')}}
@@ -18,19 +14,19 @@
             @endif
             <form action="{{route('update.profile')}}" method="post" enctype="multipart/form-data">@csrf
                 <div class="card">
-                    <div class="card-header text-white" style="background-color: red">Update profile</div>
+                    <div class="card-header">Update profile</div>
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Full Name</label>
-                            <input type="text" class="form-control" name="name"  value="{{ auth()->user()->name }}">
+                            <label for="name">Full Name</label>
+                            <input id="name" type="text" class="form-control" name="name" value="{{ auth()->user()->name }}">
                         </div>
                         <div class="form-group">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" name="address" value="{{ auth()->user()->address }}">
+                            <label for="address">Address</label>
+                            <input id="address" type="text" class="form-control" name="address" value="{{ auth()->user()->address }}">
                         </div>
                         <div class="form-group">
-                            <label for="">Profile picture</label>
+                            <label for="image">Profile picture</label>
                             <input type="file" name="image" class="form-control">
                             
                         </div>
@@ -42,7 +38,7 @@
                 </div>
             </form>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 mb-4">
                 @if (session('status') === 'password-updated')
                     <div class="alert alert-success">Your password has been updated</div>
                 @endif
@@ -50,34 +46,34 @@
                     @method('PUT')
 
                     <div class="card">
-                        <div class="card-header text-white" style="background-color: red">Change password</div>
+                        <div class="card-header">Change password</div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Current password</label>
-                                <input type="text" name="current_password" class="form-control">
+                                <label for="current_password">Current password</label>
+                                <input id="current_password" type="password" name="current_password" class="form-control" autocomplete="current-password">
                                 @error('current_password')
-                                    <div>{{ $message }}</div>
+                                    <div class="text-danger small">{{ $message }}</div>
                                 @enderror
 
                             </div>
                             <div class="form-group">
-                                <label>New password</label>
-                                <input type="text" name="password" class="form-control">
+                                <label for="password">New password</label>
+                                <input id="password" type="password" name="password" class="form-control" autocomplete="new-password">
 
                                 @error('password')
-                                    <div>{{ $message }}</div>
+                                    <div class="text-danger small">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Confirm password</label>
-                                <input type="text" name="password_confirmation" class="form-control">
+                                <label for="password_confirmation">Confirm password</label>
+                                <input id="password_confirmation" type="password" name="password_confirmation" class="form-control" autocomplete="new-password">
                                 @error('password_confirmation')
-                                    <div>{{ $message }}</div>
+                                    <div class="text-danger small">{{ $message }}</div>
                                 @enderror
 
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-danger" type="submit">Update password</button>
+                                <button class="btn btn-primary" type="submit">Update password</button>
                             </div>
                         </div>
                     </div>

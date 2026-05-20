@@ -5,31 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Advertisement;
+use Illuminate\Support\Collection;
 
 class FrontAdsController extends Controller
 {
     public function index()
     {
-
-        //for category car
         $category = Category::CategoryCar();
-        $firstAds = Advertisement::firstFourAdsInCaurosel($category->id);
-        $secondsAds = Advertisement::secondFourAdsInCaurosel($category->id);
-        //for category electronic
         $categoryElectronic = Category::CategoryElectronic();
-        $firstAdsForElectronics = Advertisement::firstFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
-        // get all categories
-        $categories = Category::get();
-        $secondsAdsForElectronics = Advertisement::secondFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
+
+        $firstAds = $category
+            ? Advertisement::firstFourAdsInCaurosel($category->id)
+            : new Collection();
+
+        $secondsAds = $category
+            ? Advertisement::secondFourAdsInCaurosel($category->id)
+            : new Collection();
+
+        $firstAdsForElectronics = $categoryElectronic
+            ? Advertisement::firstFourAdsInCauroselForElectronic($categoryElectronic->id)
+            : new Collection();
+
+        $secondsAdsForElectronics = $categoryElectronic
+            ? Advertisement::secondFourAdsInCauroselForElectronic($categoryElectronic->id)
+            : new Collection();
+
+        $categories = Category::orderBy('name')->get();
         $advertisements = Advertisement::latest()->paginate(30);
-        
-
-
-
 
         return view('index', compact(
             'firstAds',

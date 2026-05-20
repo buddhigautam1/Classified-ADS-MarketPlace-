@@ -6,9 +6,9 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
- try{
+try{
     window.Popper = require('popper.js').default;
-    window.$ = window.Jquery= require('jquery');
+    window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
 

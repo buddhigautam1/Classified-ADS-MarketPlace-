@@ -1,301 +1,269 @@
 @extends('layouts.app')
-@section('content')
 
-    <div class="slder" style="margin-top: -25px;">
-        <div id="carouselExampleSlidesOnly" class="carousel slide " data-ride="carousel">
+@section('content')
+    <section class="hero-carousel animate-in">
+        <div id="homeHeroCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="4500">
+            <ol class="carousel-indicators">
+                <li data-target="#homeHeroCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#homeHeroCarousel" data-slide-to="1"></li>
+                <li data-target="#homeHeroCarousel" data-slide-to="2"></li>
+            </ol>
+
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="/slider/slider1.png" alt="First slide">
+                    <img class="d-block w-100" src="/slider/slider1.png" alt="Buy and sell marketplace">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="/slider/slider2.png" alt="Second slide">
+                    <img class="d-block w-100" src="/slider/slider2.png" alt="Find trusted local listings">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="/slider/slider3.png" alt="Third slide">
+                    <img class="d-block w-100" src="/slider/slider3.png" alt="Post ads from any device">
                 </div>
+            </div>
+
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="hero-card">
+                        <p class="section-kicker text-white-50">Modern local marketplace</p>
+                        <h1 class="hero-title">Buy, sell, and discover deals faster.</h1>
+                        <p class="hero-text mt-3">A mobile-ready marketplace experience with clear categories, featured listings, and simple actions for every user.</p>
+                        <div class="mt-4">
+                            <a href="#latest-ads" class="btn btn-primary btn-lg mr-2">Explore ads</a>
+                            @auth
+                                <a href="{{ route('ads.create') }}" class="btn btn-light btn-lg">Post an ad</a>
+                            @else
+                                <a href="{{ route('register') }}" class="btn btn-light btn-lg">Get started</a>
+                            @endauth
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="carousel-control-prev" href="#homeHeroCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#homeHeroCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="container mt-5 animate-in animate-in-delay">
+        <div class="section-header">
+            <div>
+                <p class="section-kicker">Browse</p>
+                <h2 class="section-title">Top categories</h2>
+                <p class="section-muted">Jump into the most active marketplace categories.</p>
             </div>
         </div>
-        
-    </div>
-    
-    <div class="container mt-5">
-        {{-- <form>
-            <div class="row">
-              <div class="col">
-                <input type="text" class="form-control" placeholder="First name">
-              </div>
-              <div class="col">
-                <input type="text" class="form-control" placeholder="Last name">
-              </div>
-            </div>
-          </form> --}}
 
-        <h1>Top category</h1>
-        <div class="row text-center mt-5">
-            @foreach ($categories as $category)
-                <div class="col-lg-2 col-md-4 col-lg" id="card">
-                   
-                        <div class="card-body">
-                            <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
-                                <img class="img-thumbnail" src="{{ Storage::url($category->image) }}"
-                                style=" height: 100px; background-size: cover;">
-                                <p class="">{{ $category->name }}</p>
-                            </a>
-                      
-                    </div>
-                </div>
-              
-            @endforeach
-            <div class="col-lg-2 col-md-4 col-lg" id="card">
-                   
-                        <div class="card-body">
-                            <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
-                                <img class="img-thumbnail" src="/img/icons8-plush-48.png"
-                                style=" height: 100px; background-size: cover;">
-                                <p class="">Toys</p>
-                            </a>
-                      
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-lg" id="card">
-                   
-                    <div class="card-body">
-                        <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
-                            <img class="img-thumbnail" src="/img/icons8-soccer-ball-48.png"
-                            style=" height: 100px; background-size: cover;">
-                            <p class="">Sports</p>
-                        </a>
-                  
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-lg" id="card">
-                   
-                <div class="card-body">
-                    <a href="{{ route('category.show', $category->slug) }}" class="d-block mb-4 h-100">
-                        <img class="img-thumbnail" src="/img/icons8-retro-tv-100.png"
-                        style=" height: 100px; background-size: cover;">
-                        <p class="">Tv</p>
+        <div class="row product-grid">
+            @forelse ($categories as $topCategory)
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('category.show', $topCategory->slug) }}" class="category-card">
+                        <img src="{{ Storage::url($topCategory->image) }}" alt="{{ $topCategory->name }}">
+                        <span>{{ $topCategory->name }}</span>
                     </a>
-              
-            </div>
-        </div>
-        </div>
-
-        <div class="container mt-5">
-            <br>
-            <span>
-                <h1>Car</h1>
-                <a href="{{ route('category.show', $category->slug) }}" class="float-right">View all</a>
-
-            </span>
-            <br>
-            <br>
-            <div id="carouselExampleFade{{ $category->id }}" class="carousel slide " data-ride="carousel"
-                data-interval="3500">
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="row">
-                            @forelse($firstAds as $firstad)
-
-                                <div class="col-lg-4 d-flex align-items-stretch">
-                                    <div class="card mb-4 box-shadow">
-                                        <a href="{{ route('product.view', [$firstad->id, $firstad->slug]) }}"> <img
-                                                class="card-img-top" style="width:100%; height: 250px; background-size: cover;"
-                                                src="{{ Storage::url($firstad->feature_image) }}" alt="Card image cap"></a>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $firstad->name }}</h5>
-                                            <p class="card-text">USD {{ $firstad->price }}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$firstad->id, $firstad->slug]) }}"
-                                                        class="btn btn-sm btn-outline-secondary">View ad</a>
-                                                </div>
-                                                <small class="text-muted">{{ $firstad->created_at->format('Y-m-d') }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @empty
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="row">
-                            @forelse($secondsAds as $secondsad)
-                                <div class="col-lg-4 d-flex align-items-stretch">
-                                    <div class="card mb-4 box-shadow">
-                                        <a href="{{ route('product.view', [$secondsad->id, $firstad->slug]) }}">
-                                            <img class="card-img-top" style="width:100%; height:
-                                                          250px; background-size: cover;"
-                                                src="{{ Storage::url($secondsad->feature_image) }}"></a>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $secondsad->name }}</h5>
-                                            <p class="card-text">USD {{ $secondsad->price }}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$secondsad->id, $firstad->slug]) }}"
-                                                        class="btn btn-sm btn-outline-secondary">View ad</a>
-                                                </div>
-                                                <small
-                                                    class="text-muted">{{ $secondsad->created_at->format('Y-m-d') }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                            @endforelse
-
-                        </div>
-                    </div>
-
-
-
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleFade{{ $category->id }}" role="button"
-                    data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleFade{{ $category->id }}" role="button"
-                    data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-
-
-
-        <div class="container mt-5">
-            <span>
-                <h1>Electronics</h1>
-                <a href="{{ route('category.show', $categoryElectronic->slug) }}" class="float-right">View all</a>
-
-            </span>
-            <br>
-            <div id="carouselExampleFade{{ $categoryElectronic->id }}" class="carousel slide " data-ride="carousel"
-                data-interval="3500">
-                <div class="carousel-inner">
-
-                    <div class="carousel-item active">
-                        <div class="row">
-                            @forelse($firstAdsForElectronics as $firstAdsForElectronic)
-                                <div class="col-lg-4 d-flex align-items-stretch">
-                                    <div class="card mb-4 box-shadow">
-                                        <a
-                                            href="{{ route('product.view', [$firstAdsForElectronic->id, $firstAdsForElectronic->slug]) }}">
-                                            <img class="card-img-top" style="width:100%; height: 250px; background-size: cover;"
-                                                src="{{ Storage::url($firstAdsForElectronic->feature_image) }}"
-                                                alt="Card image cap"></a>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $firstAdsForElectronic->name }}</h5>
-                                            <p class="card-text">USD {{ $firstAdsForElectronic->price }}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$firstAdsForElectronic->id, $firstAdsForElectronic->slug]) }}"
-                                                        class="btn btn-sm btn-outline-secondary">View ad</a>
-                                                </div>
-                                                <small
-                                                    class="text-muted">{{ $firstAdsForElectronic->created_at->format('Y-m-d') }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @empty
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="row">
-                            @forelse($secondsAdsForElectronics as $secondsAdsForElectronic)
-                                <div class="col-lg-4 d-flex align-items-stretch">
-                                    <div class="card mb-4 box-shadow">
-                                        <a
-                                            href="{{ route('product.view', [$secondsAdsForElectronic->id, $secondsAdsForElectronic->slug]) }}">
-                                            <img class="card-img-top" style="width:100%; height: 250px; background-size: cover;"
-                                                src="{{ Storage::url($secondsAdsForElectronic->feature_image) }}"></a>
-
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $secondsAdsForElectronic->name }}</h5>
-                                            <p class="card-text">USD {{ $secondsAdsForElectronic->price }}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <a href="{{ route('product.view', [$secondsAdsForElectronic->id, $firstAdsForElectronic->slug]) }}"
-                                                        class="btn btn-sm btn-outline-secondary">View ad</a>
-                                                </div>
-                                                <small
-                                                    class="text-muted">{{ $secondsAdsForElectronic->created_at->format('Y-m-d') }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                            @endforelse
-
-                        </div>
-                    </div>
-
-
-
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-info mb-0">Categories will appear here after they are added.</div>
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleFade{{ $categoryElectronic->id }}" role="button"
-                    data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleFad{{ $categoryElectronic->id }}e" role="button"
-                    data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+            @endforelse
         </div>
+    </section>
 
-        <div class="container mt-5">
-            <span>
-                <h1>Latest Ads</h1>
-            </span>
-            <div class="row mt-5">
+    @if ($category)
+        <section class="container mt-5 animate-in">
+            <div class="section-header">
+                <div>
+                    <p class="section-kicker">Featured</p>
+                    <h2 class="section-title">{{ $category->name }}</h2>
+                </div>
+                <a href="{{ route('category.show', $category->slug) }}" class="btn btn-outline-primary">View all</a>
+            </div>
 
-
-                @foreach ($advertisements as $advertisement)
-                    <div class="col-lg-4 d-flex align-items-stretch">
-                        <div class="card mb-4 box-shadow">
-                            <img class="card-img-top" style="width:100%; height: 250px; background-size: cover;"
-                                src="{{ Storage::url($advertisement->feature_image) }}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $advertisement->name }}</h5>
-                                <p class="card-text">USD {{ $advertisement->price }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <a href="{{ route('product.view', [$advertisement->id, $advertisement->slug]) }}"
-                                            class="btn btn-sm btn-outline-secondary">View ad</a>
-                                    </div>
-                                    <small class="text-muted">{{ $advertisement->created_at->format('Y-m-d') }}</small>
+            <div id="carCarousel{{ $category->id }}" class="carousel slide" data-ride="carousel" data-interval="4500">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row product-grid">
+                            @forelse ($firstAds as $firstAd)
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <article class="listing-card">
+                                        <a href="{{ route('product.view', [$firstAd->id, $firstAd->slug]) }}">
+                                            <img src="{{ Storage::url($firstAd->feature_image) }}" alt="{{ $firstAd->name }}">
+                                        </a>
+                                        <div class="card-body">
+                                            <h3 class="h5 listing-title">{{ $firstAd->name }}</h3>
+                                            <p class="listing-price">USD {{ $firstAd->price }}</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                <a href="{{ route('product.view', [$firstAd->id, $firstAd->slug]) }}" class="btn btn-sm btn-outline-primary">View ad</a>
+                                                <small class="text-muted">{{ $firstAd->created_at->format('Y-m-d') }}</small>
+                                            </div>
+                                        </div>
+                                    </article>
                                 </div>
+                            @empty
+                                <div class="col-12">
+                                    <div class="alert alert-info mb-0">No featured ads available in this category yet.</div>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    @if ($secondsAds->count())
+                        <div class="carousel-item">
+                            <div class="row product-grid">
+                                @foreach ($secondsAds as $secondAd)
+                                    <div class="col-12 col-sm-6 col-lg-4">
+                                        <article class="listing-card">
+                                            <a href="{{ route('product.view', [$secondAd->id, $secondAd->slug]) }}">
+                                                <img src="{{ Storage::url($secondAd->feature_image) }}" alt="{{ $secondAd->name }}">
+                                            </a>
+                                            <div class="card-body">
+                                                <h3 class="h5 listing-title">{{ $secondAd->name }}</h3>
+                                                <p class="listing-price">USD {{ $secondAd->price }}</p>
+                                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                    <a href="{{ route('product.view', [$secondAd->id, $secondAd->slug]) }}" class="btn btn-sm btn-outline-primary">View ad</a>
+                                                    <small class="text-muted">{{ $secondAd->created_at->format('Y-m-d') }}</small>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-            {{ $advertisements->links() }}
+                    @endif
+                </div>
 
+                @if ($secondsAds->count())
+                    <a class="carousel-control-prev" href="#carCarousel{{ $category->id }}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carCarousel{{ $category->id }}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                @endif
+            </div>
+        </section>
+    @endif
+
+    @if ($categoryElectronic)
+        <section class="container mt-5 animate-in">
+            <div class="section-header">
+                <div>
+                    <p class="section-kicker">Trending</p>
+                    <h2 class="section-title">{{ $categoryElectronic->name }}</h2>
+                </div>
+                <a href="{{ route('category.show', $categoryElectronic->slug) }}" class="btn btn-outline-primary">View all</a>
+            </div>
+
+            <div id="electronicsCarousel{{ $categoryElectronic->id }}" class="carousel slide" data-ride="carousel" data-interval="4500">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row product-grid">
+                            @forelse ($firstAdsForElectronics as $firstElectronicAd)
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <article class="listing-card">
+                                        <a href="{{ route('product.view', [$firstElectronicAd->id, $firstElectronicAd->slug]) }}">
+                                            <img src="{{ Storage::url($firstElectronicAd->feature_image) }}" alt="{{ $firstElectronicAd->name }}">
+                                        </a>
+                                        <div class="card-body">
+                                            <h3 class="h5 listing-title">{{ $firstElectronicAd->name }}</h3>
+                                            <p class="listing-price">USD {{ $firstElectronicAd->price }}</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                <a href="{{ route('product.view', [$firstElectronicAd->id, $firstElectronicAd->slug]) }}" class="btn btn-sm btn-outline-primary">View ad</a>
+                                                <small class="text-muted">{{ $firstElectronicAd->created_at->format('Y-m-d') }}</small>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            @empty
+                                <div class="col-12">
+                                    <div class="alert alert-info mb-0">No featured electronics ads available yet.</div>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    @if ($secondsAdsForElectronics->count())
+                        <div class="carousel-item">
+                            <div class="row product-grid">
+                                @foreach ($secondsAdsForElectronics as $secondElectronicAd)
+                                    <div class="col-12 col-sm-6 col-lg-4">
+                                        <article class="listing-card">
+                                            <a href="{{ route('product.view', [$secondElectronicAd->id, $secondElectronicAd->slug]) }}">
+                                                <img src="{{ Storage::url($secondElectronicAd->feature_image) }}" alt="{{ $secondElectronicAd->name }}">
+                                            </a>
+                                            <div class="card-body">
+                                                <h3 class="h5 listing-title">{{ $secondElectronicAd->name }}</h3>
+                                                <p class="listing-price">USD {{ $secondElectronicAd->price }}</p>
+                                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                                    <a href="{{ route('product.view', [$secondElectronicAd->id, $secondElectronicAd->slug]) }}" class="btn btn-sm btn-outline-primary">View ad</a>
+                                                    <small class="text-muted">{{ $secondElectronicAd->created_at->format('Y-m-d') }}</small>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                @if ($secondsAdsForElectronics->count())
+                    <a class="carousel-control-prev" href="#electronicsCarousel{{ $categoryElectronic->id }}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#electronicsCarousel{{ $categoryElectronic->id }}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                @endif
+            </div>
+        </section>
+    @endif
+
+    <section id="latest-ads" class="container mt-5 animate-in">
+        <div class="section-header">
+            <div>
+                <p class="section-kicker">Fresh listings</p>
+                <h2 class="section-title">Latest ads</h2>
+                <p class="section-muted">Recently posted items from sellers around you.</p>
+            </div>
         </div>
 
+        <div class="row product-grid">
+            @forelse ($advertisements as $advertisement)
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <article class="listing-card">
+                        <a href="{{ route('product.view', [$advertisement->id, $advertisement->slug]) }}">
+                            <img src="{{ Storage::url($advertisement->feature_image) }}" alt="{{ $advertisement->name }}">
+                        </a>
+                        <div class="card-body">
+                            <h3 class="h5 listing-title">{{ $advertisement->name }}</h3>
+                            <p class="listing-price">USD {{ $advertisement->price }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <a href="{{ route('product.view', [$advertisement->id, $advertisement->slug]) }}" class="btn btn-sm btn-outline-primary">View ad</a>
+                                <small class="text-muted">{{ $advertisement->created_at->format('Y-m-d') }}</small>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="alert alert-info">No advertisements have been published yet.</div>
+                </div>
+            @endforelse
+        </div>
 
-
-
-    @endsection
-    <style>
-      
-
-        .card:hover {
-            border: 2px solid blue;
-        }
-
-    </style>
+        <div class="mt-4">
+            {{ $advertisements->links() }}
+        </div>
+    </section>
+@endsection
